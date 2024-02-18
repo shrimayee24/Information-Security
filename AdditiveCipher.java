@@ -1,98 +1,81 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AdditiveCipher {
-
     public static String acceptInput() {
-        boolean isNotCapital = false;
-        String input;
-        do {
-            System.out.println("Enter string to be encrypted/decrypted:");
-            Scanner scanner = new Scanner(System.in);
-            input = scanner.nextLine();
-            int n = input.length();
-            for (int i = 0; i < n; i++) {
-                char curr = input.charAt(i);
-                int currAscii = (int) curr;
-                if (currAscii >= 65 && currAscii <= 90) {
-                    isNotCapital = true;
-                    break;
-                }
+        Scanner sc= new Scanner(System.in);
+        boolean correctInput=false;
+        String input="";
+        do{
+            System.out.println("Enter String input (capital letters):");
+            input=sc.next();
+            if(checkInputCorrect(input)){
+                correctInput=true;
             }
-        } while (!isNotCapital);
+        }
+        while(!correctInput);
+        System.out.println("Input = "+input);
         return input;
     }
 
-    public static boolean checkKeyCorrect(String key) {
-        boolean isInt = true;
-        int n = key.length();
-        for (int i = 0; i < n; i++) {
-            if (!Character.isDigit(key.charAt(i))) {
-                isInt = false;
-                break;
-            }
-        }
-        return isInt;
+    public static boolean checkInputCorrect(String input) {
+        return input.matches("[A-Z]+");
     }
 
     public static int acceptKey() {
-        boolean isInt = true;
-        int key;
+        int key = 0;
+        boolean correctKey = false;
         do {
-            System.out.println("Enter key:");
-            Scanner scanner = new Scanner(System.in);
-            key = scanner.nextInt();
-            if (key < 0) {
-                key = (key + 26) % 26;
+            System.out.println("Enter Key (an integer):");
+            Scanner sc = new Scanner(System.in);
+            if (sc.hasNextInt()) {
+                key = sc.nextInt();
+                correctKey = true;
+            } else {
+                System.out.println("Invalid input. Key should be an integer.");
             }
-        } while (!isInt);
+        } while (!correctKey);
+        System.out.println("Key = " + key);
         return key;
     }
 
-    public static String encrypt(String input, int key) {
-        StringBuilder ans = new StringBuilder();
-        int n = input.length();
-        for (int i = 0; i < n; i++) {
-            char curr = input.charAt(i);
-            int currAscii = (int) curr;
-            currAscii -= 65;
-            currAscii = (currAscii + key) % 26;
-            currAscii += 65;
-            curr = (char) currAscii;
-            ans.append(curr);
+    public static String encrypt(String input, int key, char[] capitalLetters) {
+        StringBuilder encryptedString = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            int index = ch - 'A'; // Convert character to 0-based index
+            int encryptedIndex = (index + key) % 26; // Apply the additive cipher formula
+            if (encryptedIndex < 0) {
+                encryptedIndex += 26; // Handle negative indices
+            }
+            encryptedString.append(capitalLetters[encryptedIndex]);
         }
-        return ans.toString();
+        System.out.println("Encrypted String = " + encryptedString);
+        return encryptedString.toString();
     }
 
-    public static String decrypt(String input, int key) {
-        StringBuilder ans = new StringBuilder();
-        int n = input.length();
-        for (int i = 0; i < n; i++) {
-            char curr = input.charAt(i);
-            int currAscii = (int) curr;
-            currAscii -= 65;
-            currAscii = (currAscii - key);
-            if (currAscii >= 0) {
-                currAscii = currAscii % 26;
-                currAscii += 65;
-            } else {
-                currAscii = currAscii + 26;
-                currAscii += 65;
+    public static String decrypt(String input, int key, char[] capitalLetters) {
+        StringBuilder decryptedString = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+            int index = ch - 'A'; // Convert character to 0-based index
+            int decryptedIndex = (index - key) % 26; // Apply the additive cipher formula
+            if (decryptedIndex < 0) {
+                decryptedIndex += 26; // Handle negative indices
             }
-            curr = (char) currAscii;
-            ans.append(curr);
+            decryptedString.append(capitalLetters[decryptedIndex]);
         }
-        return ans.toString();
+        System.out.println("Decrypted String = " + decryptedString);
+        return decryptedString.toString();
     }
 
     public static void main(String[] args) {
-        String input = acceptInput();
+        char[] capitalLetters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
         int key = acceptKey();
-        key = key % 26;
-        String encryptedCode = encrypt(input, key);
-        System.out.println("-----------------------\nEncrypted code for given input: " + encryptedCode);
-        String decryptedCode = decrypt(encryptedCode, key);
-        String decryptedCode2 = decrypt(input, key);
-        System.out.println("-----------------------\nDecrypted code for encrypted code: " + decryptedCode);
-        System.out.println("-----------------------\nDecrypted code for given input: " + decryptedCode2);
+        String input = acceptInput();
+        String encrypted = encrypt(input, key, capitalLetters);
+        decrypt(encrypted, key, capitalLetters);
     }
 }
