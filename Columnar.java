@@ -12,13 +12,27 @@ public class Columnar {
     }
 
     private static String decrypt(int[] key, String input) {
+        StringBuilder ans= new StringBuilder();
         char[][] m= new char[input.length()/key.length][key.length];
-        for (int i=0;i<input.length();i++){
-            int col=findCol(i+1,key);
-            for(int j=0;j<key.length;j++){
+        int rows=input.length()/ key.length;
+        int n = key.length;
 
+        for(int i=0;i< input.length();i++){
+            int col=findCol((i/rows)+1,key);
+            int row= i%rows;
+            m[row][col]=input.charAt(i);
+        }
+        System.out.println();
+        printCharArray(m);
+
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<key.length;j++){
+                ans.append(m[i][j]);
             }
         }
+        String decrypted=ans.toString();
+        System.out.println("Decrypted text = "+decrypted);
+        return decrypted;
 
     }
 
