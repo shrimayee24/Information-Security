@@ -1,12 +1,10 @@
-import javax.crypto.Cipher;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
-
-public class DES {
-
-    private static final String ALGORITHM = "DES";
+import java.util.*;
+public class AES2 {
+    private static final String ALGORITHM = "AES";
     private static final byte[] keyValue =
-            new byte[] { 'S','d','t','r','e','t','h','f'};
+            new byte[] {  'T', 'h', '6', 's', 'I', 's', 'h', 'S', 'e', 'c', 'r','e', 't', 'K', 'e', 'y' };
 
     public static String encrypt(String data) {
         try {
@@ -39,11 +37,10 @@ public class DES {
 
     public static void main(String[] args) {
         String data = "attack at 10 pm";
-        String encryptedData = DES2.encrypt(data);
-        String decryptedData = DES2.decrypt(encryptedData);
+        String encryptedData = AES2.encrypt(data);
+        String decryptedData = AES2.decrypt(encryptedData);
         System.out.println("Original Data: " + data);
         System.out.println("Encrypted Data: " + encryptedData);
         System.out.println("Decrypted Data: " + decryptedData);
     }
 }
-

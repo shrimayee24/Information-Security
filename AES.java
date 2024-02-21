@@ -16,7 +16,9 @@ public class AES {
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] encryptedBytes = cipher.doFinal(data.getBytes());
             return Base64.getEncoder().encodeToString(encryptedBytes);
-        } catch (Exception e) {
+
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }
