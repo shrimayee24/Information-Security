@@ -39,8 +39,8 @@ public class DES {
 
     public static void main(String[] args) {
         String data = "attack at 10 pm";
-        String encryptedData = DES2.encrypt(data);
-        String decryptedData = DES2.decrypt(encryptedData);
+        String encryptedData = DES.encrypt(data);
+        String decryptedData = DES.decrypt(encryptedData);
         System.out.println("Original Data: " + data);
         System.out.println("Encrypted Data: " + encryptedData);
         System.out.println("Decrypted Data: " + decryptedData);

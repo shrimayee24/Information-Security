@@ -5,8 +5,8 @@ import java.util.*;
 
 public class DES2 {
 private static final String algorithm = "DES";
-private static final byte[] keyvalue= new byte[] { '7','3','w','r','e','v','h','f'};
-     public static String encrypt(String data){
+//private static final byte[] k= new byte[] { '7','3','w','r','e','v','h','f'};
+     public static String encrypt(String data, byte[] keyvalue){
          try{
              SecretKeySpec key= new SecretKeySpec(keyvalue,algorithm);
              Cipher cipher = Cipher.getInstance(algorithm);
@@ -20,7 +20,7 @@ private static final byte[] keyvalue= new byte[] { '7','3','w','r','e','v','h','
              return null;
          }
      }
-    public static String decrypt(String encrypted){
+    public static String decrypt(String encrypted, byte[] keyvalue){
         try{
             SecretKeySpec key= new SecretKeySpec(keyvalue,algorithm);
             Cipher cipher = Cipher.getInstance(algorithm);
@@ -53,8 +53,10 @@ private static final byte[] keyvalue= new byte[] { '7','3','w','r','e','v','h','
 
     public static void main(String[] args) {
         String data = "attack at 12 pm";
-        String encryptedData = DES2.encrypt(data);
-        String decryptedData = DES2.decrypt(encryptedData);
+        byte[] keyvalue=generateKey();
+        String encryptedData = DES2.encrypt(data, keyvalue);
+        String decryptedData = DES2.decrypt(encryptedData, keyvalue);
+        System.out.println("Key: "+keyvalue.toString());
         System.out.println("Original Data: " + data);
         System.out.println("Encrypted Data: " + encryptedData);
         System.out.println("Decrypted Data: " + decryptedData);
