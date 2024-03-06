@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 public class Vigenere {
     public static void main(String[] args) {
         char[] capitalLetters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
