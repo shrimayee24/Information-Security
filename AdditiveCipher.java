@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+
 public class AdditiveCipher {
     public static String acceptInput() {
         Scanner sc= new Scanner(System.in);
