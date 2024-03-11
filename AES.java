@@ -3,7 +3,6 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 public class AES {
-
     private static final String ALGORITHM = "AES";
     private static final byte[] keyValue =
             new byte[] { 'T', 'h', 'i', 's', 'I', 's', 'A', 'S', 'e', 'c', 'r','e', 't', 'K', 'e', 'y' };
