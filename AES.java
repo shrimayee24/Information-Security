@@ -10,6 +10,7 @@ public class AES {
 
     public static String encrypt(String data) {
         try {
+            
             SecretKeySpec key = new SecretKeySpec(keyValue, ALGORITHM);
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, key);
