@@ -1,6 +1,5 @@
 import java.util.HashMap;
 import java.util.Scanner;
-
 public class HillCipher2 {
     public static void main(String[] args) {
         HashMap<Integer, Integer> map= inversemap();
