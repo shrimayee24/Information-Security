@@ -66,7 +66,7 @@ public class DigitalSignature {
 
         int ch = 0;
         do {
-            System.out.println("Enter:\n1.Sender's Side: for sending message\n2. Receiver;s Side: for verifying digital signature\n3. Exit");
+            System.out.println("Enter:\n1.Sender's Side: for sending message\n2. Receiver's Side: for verifying digital signature\n3. Exit");
             ch = sc.nextInt();
             switch (ch) {
                 case 1:
