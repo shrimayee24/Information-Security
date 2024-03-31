@@ -11,8 +11,6 @@ public class RSA {
     public static void main(String[] args) throws Exception {
 
         KeyPair keyPair = generateKeyPair();
-
-
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
 

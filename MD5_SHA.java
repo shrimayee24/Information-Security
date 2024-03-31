@@ -3,9 +3,9 @@ import java.security.*;
 public class MD5_SHA{
 
     public static void main(String[] args) {
-        String original = "Hello, MD5!";
+        String original = "Hello";
         String hash = getMD5(original);
-        System.out.println("MD5 Hash: " + hash);
+        System.out.println("Hash: " + hash);
     }
 
     public static String getMD5(String input) {
