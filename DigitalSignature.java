@@ -51,7 +51,7 @@ public class DigitalSignature {
         String inputString = sc.next();
         try {
             return inputString.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             // Handle exception
             e.printStackTrace();
             return null;
@@ -66,7 +66,7 @@ public class DigitalSignature {
 
         int ch = 0;
         do {
-            System.out.println("Enter:\n1. for sending message\n2. for verifying digital signature\n3. Exit");
+            System.out.println("Enter:\n1.Sender's Side: for sending message\n2. Receiver;s Side: for verifying digital signature\n3. Exit");
             ch = sc.nextInt();
             switch (ch) {
                 case 1:
@@ -86,6 +86,7 @@ public class DigitalSignature {
                     boolean result = verifyDigitalSignature(input, receivedBytes, keyPair);
                     System.out.println("Digital signature is valid: " + result);
                     break;
+
                 case 3:
                     System.out.println("Exiting");
                     break;
