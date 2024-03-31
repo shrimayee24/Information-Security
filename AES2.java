@@ -1,6 +1,7 @@
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.*;
+
 public class AES2 {
     private static final String ALGORITHM = "AES";
     private static final byte[] keyValue =
