@@ -6,16 +6,53 @@ import java.util.Scanner;
 public class DigitalSignature {
     public static KeyPair generateKeyPair() {
         try {
-            // Initialize KeyPairGenerator with the desired algorithm (e.g., RSA)
+
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-
-            // Set the key size (adjust as needed)
             keyPairGenerator.initialize(2048);
-
-            // Generate the key pair
             return keyPairGenerator.generateKeyPair();
+
         } catch (NoSuchAlgorithmException e) {
-            // Handle exception (e.g., algorithm not supported)
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private static boolean verifyDigitalSignature(byte[] input, byte[] hashedSignedMessage, KeyPair keyPair) {
+        try {
+
+            Signature signature = Signature.getInstance("SHA256withRSA");
+            signature.initVerify(keyPair.getPublic());
+            signature.update(input);
+            return signature.verify(hashedSignedMessage);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private static byte[] hashSignMessage(byte[] input, KeyPair keyPair) {
+        try {
+
+            Signature signature = Signature.getInstance("SHA256withRSA");
+            signature.initSign(keyPair.getPrivate());
+            signature.update(input);
+            return signature.sign();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static byte[] acceptInput() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter message:");
+        String inputString = sc.next();
+        try {
+            return inputString.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // Handle exception
             e.printStackTrace();
             return null;
         }
@@ -56,56 +93,5 @@ public class DigitalSignature {
         } while (ch != 3);
     }
 
-    private static boolean verifyDigitalSignature(byte[] input, byte[] hashedSignedMessage, KeyPair keyPair) {
-        try {
-            // Get a Signature instance using the SHA256withRSA algorithm
-            Signature signature = Signature.getInstance("SHA256withRSA");
 
-            // Initialize the signature with the public key of the sender
-            signature.initVerify(keyPair.getPublic());
-
-            // Update the signature with the input data
-            signature.update(input);
-
-            // Verify the digital signature
-            return signature.verify(hashedSignedMessage);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-            // Handle exceptions
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private static byte[] hashSignMessage(byte[] input, KeyPair keyPair) {
-        try {
-            // Get a Signature instance using the SHA256withRSA algorithm
-            Signature signature = Signature.getInstance("SHA256withRSA");
-
-            // Initialize the signature with the private key of the sender
-            signature.initSign(keyPair.getPrivate());
-
-            // Update the signature with the input data
-            signature.update(input);
-
-            // Generate the digital signature
-            return signature.sign();
-        } catch (Exception e) {
-            // Handle exceptions
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private static byte[] acceptInput() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter message:");
-        String inputString = sc.next();
-        try {
-            return inputString.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            // Handle exception
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
