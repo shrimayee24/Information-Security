@@ -1,0 +1,54 @@
+1.	Generate RSA Private Key:
+openssl genpkey -algorithm RSA -out private_key.pem -aes256
+2.	Extract RSA Public Key from Private Key:
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+3.	Encrypt Data using RSA Public Key:
+openssl rsautl -encrypt -pubin -inkey public_key.pem -in plaintext.txt -out encrypted_data.enc
+4.	Decrypt Data using RSA Private Key:
+openssl rsautl -decrypt -inkey private_key.pem -in encrypted_data.enc -out decrypted_data.txt
+
+
+Certainly! To encrypt or decrypt using AES with OpenSSL, you can use the following commands in your terminal:
+
+1. Encrypt:
+   bash
+   openssl enc -aes-256-cbc -in plaintext.txt -out encrypted.txt
+
+   Replace plaintext.txt with the name of your input file and encrypted.txt with the desired name for the output encrypted file.
+
+2. Decrypt:
+   bash
+   openssl enc -aes-256-cbc -d -in encrypted.txt -out decrypted.txt
+
+
+   Replace encrypted.txt with the name of your encrypted file and decrypted.txt with the desired name for the output decrypted file.
+
+Make sure to replace the file names and paths as needed for your specific use case. Additionally, you may need to provide a passphrase or key depending on your security requirements.
+
+Certainly! DES (Data Encryption Standard) is an older symmetric encryption algorithm. Here are examples for encryption and decryption using DES with OpenSSL:
+
+1. Encrypt:
+   bash
+   openssl enc -des-cbc -in plaintext.txt -out encrypted_des.txt
+
+
+   Replace plaintext.txt with the name of your input file and encrypted_des.txt with the desired name for the output encrypted file.
+
+2. Decrypt:
+   bash
+   openssl enc -des-cbc -d -in encrypted_des.txt -out decrypted_des.txt
+
+
+   Replace encrypted_des.txt with the name of your encrypted file and decrypted_des.txt with the desired name for the output decrypted file.
+
+Similar to AES, you may need to provide a passphrase or key depending on your security requirements. Keep in mind that DES is considered insecure for many modern applications, and you might want to consider more secure algorithms like AES if possible.
+
+
+
+
+1.	Generate MD5 Hash:
+openssl md5 filename.txt
+
+
+2.	Generate SHA-256 Hash:
+openssl sha256 filename.txt
