@@ -3,6 +3,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Scanner;
 
+
 public class AES {
 
     private static final String ALGORITHM = "AES";
