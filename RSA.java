@@ -27,14 +27,14 @@ public class RSA {
         System.out.println("Decrypted Message: " + decryptedMessage);
     }
 
-    // Function to generate RSA Key Pair
+
     public static KeyPair generateKeyPair() throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
         return keyPairGenerator.generateKeyPair();
     }
 
-    // Function to encrypt message using RSA Public Key
+
     public static byte[] encrypt(String message, PublicKey publicKey) throws Exception {
         // Perform encryption
         Cipher cipher = Cipher.getInstance("RSA");
@@ -42,7 +42,7 @@ public class RSA {
         return cipher.doFinal(message.getBytes());
     }
 
-    // Function to decrypt message using RSA Private Key
+
     public static String decrypt(byte[] encryptedMessage, PrivateKey privateKey) throws Exception {
         // Perform decryption
         Cipher cipher = Cipher.getInstance("RSA");

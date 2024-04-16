@@ -1,98 +1,92 @@
-import java.io.UnsupportedEncodingException;
 import java.security.*;
-import java.util.Base64;
 import java.util.Scanner;
 
 public class DigitalSignature {
-    public static KeyPair generateKeyPair() {
-        try {
+    public static void main(String[] args) throws SignatureException {
+        KeyPair key = generateKeys();
+        byte[] plaintext = acceptPlaintext();
+        byte[] hash = hash(plaintext, "MD5");
+        Signature signedDoc = sign(hash, key);
+        System.out.println("Signed Document (in hexadecimal): " + bytesToHex(signedDoc.sign()).toString());
+        String signedDocFromSender = acceptSignedDoc();
+        boolean signIsValid = signVerify(signedDocFromSender, hash, key);
+        System.out.println("Digital signature is valid: " + signIsValid);
+    }
 
+    private static String acceptSignedDoc() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter signed document (in hexadecimal):");
+        return sc.next();
+    }
+
+    private static KeyPair generateKeys() {
+        try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
             return keyPairGenerator.generateKeyPair();
-
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
         }
     }
-    private static boolean verifyDigitalSignature(byte[] input, byte[] hashedSignedMessage, KeyPair keyPair) {
+
+    private static byte[] acceptPlaintext() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter plaintext:");
+        String input = sc.next();
+        return input.getBytes();
+    }
+
+    private static byte[] hash(byte[] plaintext, String algorithm) {
         try {
-
-            Signature signature = Signature.getInstance("MD5withRSA");
-            signature.initVerify(keyPair.getPublic());
-            signature.update(input);
-            return signature.verify(hashedSignedMessage);
-
+            MessageDigest digest = MessageDigest.getInstance(algorithm);
+            return digest.digest(plaintext);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
         }
-        catch (Exception e) {
+    }
+
+    private static Signature sign(byte[] hash, KeyPair key) {
+        try {
+            Signature signature = Signature.getInstance("MD5withRSA");
+            signature.initSign(key.getPrivate());
+            signature.update(hash);
+            return signature;
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static boolean signVerify(String signedDocHex, byte[] hash, KeyPair key) {
+        try {
+            Signature signedDoc = Signature.getInstance("MD5withRSA");
+            signedDoc.initVerify(key.getPublic());
+            signedDoc.update(hash);
+            byte[] signedDocBytes = hexStringToByteArray(signedDocHex);
+            return signedDoc.verify(signedDocBytes);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    private static byte[] hashSignMessage(byte[] input, KeyPair keyPair) {
-        try {
-
-            Signature signature = Signature.getInstance("MD5withRSA");
-            signature.initSign(keyPair.getPrivate());
-            signature.update(input);
-            return signature.sign();
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02X", b));
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return sb.toString();
     }
 
-    private static byte[] acceptInput() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter message:");
-        String inputString = sc.next();
-        try {
-            return inputString.getBytes("UTF-8");
-        } catch (Exception e) {
-            // Handle exception
-            e.printStackTrace();
-            return null;
+    private static byte[] hexStringToByteArray(String hexString) {
+        int len = hexString.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4)
+                    + Character.digit(hexString.charAt(i+1), 16));
         }
+        return data;
     }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        KeyPair keyPair = generateKeyPair();
-        byte[] input = null;
-        byte[] hashed_signed_message = null;
-
-        int ch = 0;
-        do {
-            System.out.println("Enter:\n1.Sender's Side: for sending message\n2. Receiver's Side: for verifying digital signature\n3. Exit");
-            ch = sc.nextInt();
-            switch (ch) {
-                case 1:
-                    input = acceptInput();
-                    hashed_signed_message = hashSignMessage(input, keyPair);
-                    System.out.println("Sent message: " + Base64.getEncoder().encodeToString(hashed_signed_message));
-                    break;
-                case 2:
-                    if (input == null) {
-                        System.out.println("No message sent yet. Please send a message first.");
-                        break;
-                    }
-
-                    System.out.println("Enter received text:");
-                    String received = sc.next();
-                    byte[] receivedBytes = Base64.getDecoder().decode(received);
-                    boolean result = verifyDigitalSignature(input, receivedBytes, keyPair);
-                    System.out.println("Digital signature is valid: " + result);
-                    break;
-
-                case 3:
-                    System.out.println("Exiting");
-                    break;
-            }
-        } while (ch != 3);
-    }
-
-
 }
