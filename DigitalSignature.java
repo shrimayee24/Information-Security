@@ -21,9 +21,9 @@ public class DigitalSignature {
 
     private static KeyPair generateKeys() {
         try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            keyPairGenerator.initialize(2048);
-            return keyPairGenerator.generateKeyPair();
+            KeyPairGenerator key = KeyPairGenerator.getInstance("RSA");
+            key.initialize(2048);
+            return key.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
